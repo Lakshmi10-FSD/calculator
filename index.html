@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Advanced Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body id="body" class="bg-gray-900 flex items-center justify-center h-screen transition">
+
+<div class="flex gap-4">
+
+  <!-- Calculator -->
+  <div class="bg-gray-800 p-6 rounded-xl shadow-lg w-72">
+    
+    <!-- Top -->
+    <div class="flex justify-between mb-3">
+      <h1 class="text-white font-bold">Calc</h1>
+      <button onclick="toggleTheme()" class="text-white">🌙</button>
+    </div>
+
+    <!-- Display -->
+    <input id="display" type="text"
+      class="w-full mb-4 p-3 text-right text-xl rounded bg-gray-700 text-white"
+      disabled />
+
+    <!-- Buttons -->
+    <div class="grid grid-cols-4 gap-3">
+      <button onclick="clearDisplay()" class="bg-red-500 text-white p-3 rounded">C</button>
+      <button onclick="deleteLast()" class="bg-yellow-500 text-white p-3 rounded">⌫</button>
+      <button onclick="append('%')" class="bg-gray-600 text-white p-3 rounded">%</button>
+      <button onclick="append('/')" class="bg-orange-500 text-white p-3 rounded">/</button>
+
+      <button onclick="append('7')" class="btn">7</button>
+      <button onclick="append('8')" class="btn">8</button>
+      <button onclick="append('9')" class="btn">9</button>
+      <button onclick="append('*')" class="bg-orange-500 text-white p-3 rounded">*</button>
+
+      <button onclick="append('4')" class="btn">4</button>
+      <button onclick="append('5')" class="btn">5</button>
+      <button onclick="append('6')" class="btn">6</button>
+      <button onclick="append('-')" class="bg-orange-500 text-white p-3 rounded">-</button>
+
+      <button onclick="append('1')" class="btn">1</button>
+      <button onclick="append('2')" class="btn">2</button>
+      <button onclick="append('3')" class="btn">3</button>
+      <button onclick="append('+')" class="bg-orange-500 text-white p-3 rounded">+</button>
+
+      <button onclick="append('0')" class="btn col-span-2">0</button>
+      <button onclick="append('.')" class="btn">.</button>
+      <button onclick="calculate()" class="bg-green-500 text-white p-3 rounded">=</button>
+    </div>
+  </div>
+
+  <!-- History -->
+  <div class="bg-gray-800 p-4 rounded-xl w-52 text-white">
+    <h2 class="font-bold mb-2">History</h2>
+    <ul id="history" class="text-sm space-y-1 max-h-64 overflow-y-auto"></ul>
+  </div>
+
+</div>
+
+<script>
+let display = document.getElementById("display");
+let historyList = document.getElementById("history");
+
+// Sound
+function playSound() {
+  let audio = new Audio("https://www.soundjay.com/buttons/button-16.mp3");
+  audio.play();
+}
+
+// Append
+function append(value) {
+  display.value += value;
+  playSound();
+}
+
+// Clear
+function clearDisplay() {
+  display.value = "";
+}
+
+// Delete
+function deleteLast() {
+  display.value = display.value.slice(0, -1);
+}
+
+// Calculate
+function calculate() {
+  try {
+    let result = eval(display.value);
+    addHistory(display.value + " = " + result);
+    display.value = result;
+  } catch {
+    display.value = "Error";
+  }
+}
+
+// History
+function addHistory(text) {
+  let li = document.createElement("li");
+  li.textContent = text;
+  historyList.prepend(li);
+}
+
+// Theme toggle
+let dark = true;
+function toggleTheme() {
+  let body = document.getElementById("body");
+  dark = !dark;
+
+  if (dark) {
+    body.classList.remove("bg-white");
+    body.classList.add("bg-gray-900");
+  } else {
+    body.classList.remove("bg-gray-900");
+    body.classList.add("bg-white");
+  }
+}
+
+// Keyboard support
+document.addEventListener("keydown", function(e) {
+  if (!isNaN(e.key) || "+-*/.%".includes(e.key)) {
+    append(e.key);
+  } else if (e.key === "Enter") {
+    calculate();
+  } else if (e.key === "Backspace") {
+    deleteLast();
+  } else if (e.key === "Escape") {
+    clearDisplay();
+  }
+});
+</script>
+
+<style>
+.btn {
+  background: #4b5563;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+}
+</style>
+
+</body>
+</html>
