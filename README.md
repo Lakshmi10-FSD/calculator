@@ -51,8 +51,4 @@ calculator-app/
 
 ---
 
-## 📌 Project Description (Short)
-
-Built an advanced calculator with keyboard support, theme switching, history tracking, and sound effects using JavaScript.
-
 
