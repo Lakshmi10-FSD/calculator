@@ -52,16 +52,28 @@
   </div>
 
   <!-- History -->
+  
   <div class="bg-gray-800 p-4 rounded-xl w-52 text-white">
     <h2 class="font-bold mb-2">History</h2>
     <ul id="history" class="text-sm space-y-1 max-h-64 overflow-y-auto"></ul>
+	<button onclick="clearHistory()" class="bg-red-500 text-white px-2 py-1 rounded text-xs mb-2">
+		Clear
+	</button>
   </div>
+  
 
 </div>
+
 
 <script>
 let display = document.getElementById("display");
 let historyList = document.getElementById("history");
+
+// Load history from localStorage
+window.onload = function () {
+  let saved = JSON.parse(localStorage.getItem("history")) || [];
+  saved.forEach(item => addHistory(item, false));
+};
 
 // Sound
 function playSound() {
@@ -69,13 +81,24 @@ function playSound() {
   audio.play();
 }
 
+// Prevent double operators
+function isOperator(char) {
+  return "+-*/%".includes(char);
+}
+
 // Append
 function append(value) {
+  let lastChar = display.value.slice(-1);
+
+  if (isOperator(value) && isOperator(lastChar)) {
+    return; // prevent ++ or **
+  }
+
   display.value += value;
   playSound();
 }
 
-// Clear
+// Clear display
 function clearDisplay() {
   display.value = "";
 }
@@ -88,41 +111,63 @@ function deleteLast() {
 // Calculate
 function calculate() {
   try {
-    let result = eval(display.value);
-    addHistory(display.value + " = " + result);
+    let expression = display.value;
+    let result = eval(expression);
+
+    let entry = expression + " = " + result;
+    addHistory(entry, true);
+
     display.value = result;
   } catch {
     display.value = "Error";
   }
 }
 
-// History
-function addHistory(text) {
+// Add history + save
+function addHistory(text, save = true) {
   let li = document.createElement("li");
   li.textContent = text;
   historyList.prepend(li);
-}
 
-// Theme toggle
-let dark = true;
-function toggleTheme() {
-  let body = document.getElementById("body");
-  dark = !dark;
-
-  if (dark) {
-    body.classList.remove("bg-white");
-    body.classList.add("bg-gray-900");
-  } else {
-    body.classList.remove("bg-gray-900");
-    body.classList.add("bg-white");
+  if (save) {
+    let stored = JSON.parse(localStorage.getItem("history")) || [];
+    stored.unshift(text);
+    localStorage.setItem("history", JSON.stringify(stored.slice(0, 10)));
   }
 }
 
-// Keyboard support
+// Clear history
+function clearHistory() {
+  historyList.innerHTML = "";
+  localStorage.removeItem("history");
+}
+
+// Theme toggle improved
+let dark = true;
+function toggleTheme() {
+  let body = document.getElementById("body");
+  let calc = document.querySelector(".bg-gray-800");
+
+  dark = !dark;
+
+  if (dark) {
+    body.classList.add("bg-gray-900");
+    body.classList.remove("bg-white");
+    calc.classList.add("bg-gray-800");
+  } else {
+    body.classList.add("bg-white");
+    body.classList.remove("bg-gray-900");
+    calc.classList.remove("bg-gray-800");
+    calc.classList.add("bg-gray-200");
+  }
+}
+
+// Keyboard support improved
 document.addEventListener("keydown", function(e) {
   if (!isNaN(e.key) || "+-*/.%".includes(e.key)) {
     append(e.key);
   } else if (e.key === "Enter") {
+    e.preventDefault();
     calculate();
   } else if (e.key === "Backspace") {
     deleteLast();
