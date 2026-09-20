@@ -7,10 +7,10 @@
 
 <body id="body" class="bg-gray-900 flex items-center justify-center h-screen transition">
 
-<div class="flex gap-4">
+<div class="flex gap-4 flex-wrap justify-center">
 
   <!-- Calculator -->
-  <div class="bg-gray-800 p-6 rounded-xl shadow-lg w-72">
+  <div id="calcBox" class="bg-gray-800 p-6 rounded-xl shadow-lg w-72">
     
     <!-- Top -->
     <div class="flex justify-between mb-3">
@@ -20,8 +20,11 @@
 
     <!-- Display -->
     <input id="display" type="text"
-      class="w-full mb-4 p-3 text-right text-xl rounded bg-gray-700 text-white"
+      class="w-full mb-1 p-3 text-right text-xl rounded bg-gray-700 text-white"
       disabled />
+
+    <!-- Preview -->
+    <p id="preview" class="text-right text-gray-400 text-sm mb-3"></p>
 
     <!-- Buttons -->
     <div class="grid grid-cols-4 gap-3">
@@ -48,28 +51,32 @@
       <button onclick="append('0')" class="btn col-span-2">0</button>
       <button onclick="append('.')" class="btn">.</button>
       <button onclick="calculate()" class="bg-green-500 text-white p-3 rounded">=</button>
+
+      <!-- Ans Button -->
+      <button onclick="useAns()" class="bg-blue-500 text-white p-3 rounded col-span-4">Ans</button>
     </div>
   </div>
 
   <!-- History -->
-  
   <div class="bg-gray-800 p-4 rounded-xl w-52 text-white">
     <h2 class="font-bold mb-2">History</h2>
+
+    <button onclick="clearHistory()" 
+    class="bg-red-500 text-white px-2 py-1 rounded text-xs mb-2">
+      Clear
+    </button>
+
     <ul id="history" class="text-sm space-y-1 max-h-64 overflow-y-auto"></ul>
-	<button onclick="clearHistory()" class="bg-red-500 text-white px-2 py-1 rounded text-xs mb-2">
-		Clear
-	</button>
   </div>
-  
 
 </div>
-
 
 <script>
 let display = document.getElementById("display");
 let historyList = document.getElementById("history");
+let lastResult = "";
 
-// Load history from localStorage
+// Load history
 window.onload = function () {
   let saved = JSON.parse(localStorage.getItem("history")) || [];
   saved.forEach(item => addHistory(item, false));
@@ -81,31 +88,46 @@ function playSound() {
   audio.play();
 }
 
-// Prevent double operators
+// Operator check
 function isOperator(char) {
   return "+-*/%".includes(char);
+}
+
+// Live preview
+function updatePreview() {
+  try {
+    if (display.value !== "") {
+      document.getElementById("preview").innerText = "= " + eval(display.value);
+    } else {
+      document.getElementById("preview").innerText = "";
+    }
+  } catch {
+    document.getElementById("preview").innerText = "";
+  }
 }
 
 // Append
 function append(value) {
   let lastChar = display.value.slice(-1);
 
-  if (isOperator(value) && isOperator(lastChar)) {
-    return; // prevent ++ or **
-  }
+  if (isOperator(value) && isOperator(lastChar)) return;
+  if (display.value.length > 15) return;
 
   display.value += value;
+  updatePreview();
   playSound();
 }
 
-// Clear display
+// Clear
 function clearDisplay() {
   display.value = "";
+  updatePreview();
 }
 
 // Delete
 function deleteLast() {
   display.value = display.value.slice(0, -1);
+  updatePreview();
 }
 
 // Calculate
@@ -114,19 +136,37 @@ function calculate() {
     let expression = display.value;
     let result = eval(expression);
 
+    lastResult = result;
+
     let entry = expression + " = " + result;
     addHistory(entry, true);
 
     display.value = result;
+    updatePreview();
   } catch {
     display.value = "Error";
   }
 }
 
-// Add history + save
+// Use Ans
+function useAns() {
+  display.value += lastResult;
+  updatePreview();
+}
+
+// Add history
 function addHistory(text, save = true) {
   let li = document.createElement("li");
   li.textContent = text;
+
+  li.onclick = function () {
+    let value = text.split("=")[1].trim();
+    display.value = value;
+    updatePreview();
+  };
+
+  li.classList.add("cursor-pointer", "hover:text-yellow-400");
+
   historyList.prepend(li);
 
   if (save) {
@@ -142,11 +182,11 @@ function clearHistory() {
   localStorage.removeItem("history");
 }
 
-// Theme toggle improved
+// Theme toggle
 let dark = true;
 function toggleTheme() {
   let body = document.getElementById("body");
-  let calc = document.querySelector(".bg-gray-800");
+  let calc = document.getElementById("calcBox");
 
   dark = !dark;
 
@@ -154,6 +194,7 @@ function toggleTheme() {
     body.classList.add("bg-gray-900");
     body.classList.remove("bg-white");
     calc.classList.add("bg-gray-800");
+    calc.classList.remove("bg-gray-200");
   } else {
     body.classList.add("bg-white");
     body.classList.remove("bg-gray-900");
@@ -162,7 +203,7 @@ function toggleTheme() {
   }
 }
 
-// Keyboard support improved
+// Keyboard
 document.addEventListener("keydown", function(e) {
   if (!isNaN(e.key) || "+-*/.%".includes(e.key)) {
     append(e.key);
@@ -183,6 +224,11 @@ document.addEventListener("keydown", function(e) {
   color: white;
   padding: 12px;
   border-radius: 8px;
+}
+
+button:active {
+  transform: scale(0.9);
+  transition: 0.1s;
 }
 </style>
 
