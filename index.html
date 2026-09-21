@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Advanced Calculator</title>
+  <title>Advanced Calculator Pro</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -10,12 +10,15 @@
 <div class="flex gap-4 flex-wrap justify-center">
 
   <!-- Calculator -->
-  <div id="calcBox" class="bg-gray-800 p-6 rounded-xl shadow-lg w-72">
+  <div id="calcBox" class="bg-gray-800 p-6 rounded-xl shadow-lg w-80">
     
     <!-- Top -->
     <div class="flex justify-between mb-3">
-      <h1 class="text-white font-bold">Calc</h1>
-      <button onclick="toggleTheme()" class="text-white">🌙</button>
+      <h1 class="text-white font-bold">Calc Pro</h1>
+      <div class="flex gap-2">
+        <button onclick="toggleSound()" class="text-white text-sm">🔊</button>
+        <button onclick="toggleTheme()" class="text-white">🌙</button>
+      </div>
     </div>
 
     <!-- Display -->
@@ -24,49 +27,57 @@
       disabled />
 
     <!-- Preview -->
-    <p id="preview" class="text-right text-gray-400 text-sm mb-3"></p>
+    <p id="preview" class="text-right text-gray-400 text-sm mb-1"></p>
+
+    <!-- Time -->
+    <p id="time" class="text-right text-green-400 text-xs mb-2"></p>
 
     <!-- Buttons -->
     <div class="grid grid-cols-4 gap-3">
+
       <button onclick="clearDisplay()" class="bg-red-500 text-white p-3 rounded">C</button>
       <button onclick="deleteLast()" class="bg-yellow-500 text-white p-3 rounded">⌫</button>
       <button onclick="append('%')" class="bg-gray-600 text-white p-3 rounded">%</button>
       <button onclick="append('/')" class="bg-orange-500 text-white p-3 rounded">/</button>
 
+      <!-- Scientific -->
+      <button onclick="sqrt()" class="bg-purple-500 text-white p-3 rounded">√</button>
+      <button onclick="square()" class="bg-purple-500 text-white p-3 rounded">x²</button>
+      <button onclick="copyResult()" class="bg-blue-500 text-white p-3 rounded">📋</button>
+      <button onclick="append('*')" class="bg-orange-500 text-white p-3 rounded">*</button>
+
       <button onclick="append('7')" class="btn">7</button>
       <button onclick="append('8')" class="btn">8</button>
       <button onclick="append('9')" class="btn">9</button>
-      <button onclick="append('*')" class="bg-orange-500 text-white p-3 rounded">*</button>
+      <button onclick="append('-')" class="bg-orange-500 text-white p-3 rounded">-</button>
 
       <button onclick="append('4')" class="btn">4</button>
       <button onclick="append('5')" class="btn">5</button>
       <button onclick="append('6')" class="btn">6</button>
-      <button onclick="append('-')" class="bg-orange-500 text-white p-3 rounded">-</button>
+      <button onclick="append('+')" class="bg-orange-500 text-white p-3 rounded">+</button>
 
       <button onclick="append('1')" class="btn">1</button>
       <button onclick="append('2')" class="btn">2</button>
       <button onclick="append('3')" class="btn">3</button>
-      <button onclick="append('+')" class="bg-orange-500 text-white p-3 rounded">+</button>
+      <button onclick="calculate()" class="bg-green-500 text-white p-3 rounded">=</button>
 
       <button onclick="append('0')" class="btn col-span-2">0</button>
       <button onclick="append('.')" class="btn">.</button>
-      <button onclick="calculate()" class="bg-green-500 text-white p-3 rounded">=</button>
 
-      <!-- Ans Button -->
       <button onclick="useAns()" class="bg-blue-500 text-white p-3 rounded col-span-4">Ans</button>
     </div>
   </div>
 
   <!-- History -->
-  <div class="bg-gray-800 p-4 rounded-xl w-52 text-white">
+  <div class="bg-gray-800 p-4 rounded-xl w-56 text-white">
     <h2 class="font-bold mb-2">History</h2>
 
     <button onclick="clearHistory()" 
-    class="bg-red-500 text-white px-2 py-1 rounded text-xs mb-2">
+    class="bg-red-500 px-2 py-1 rounded text-xs mb-2">
       Clear
     </button>
 
-    <ul id="history" class="text-sm space-y-1 max-h-64 overflow-y-auto"></ul>
+    <ul id="history" class="text-sm space-y-1 max-h-72 overflow-y-auto"></ul>
   </div>
 
 </div>
@@ -75,6 +86,7 @@
 let display = document.getElementById("display");
 let historyList = document.getElementById("history");
 let lastResult = "";
+let soundOn = true;
 
 // Load history
 window.onload = function () {
@@ -84,8 +96,18 @@ window.onload = function () {
 
 // Sound
 function playSound() {
+  if (!soundOn) return;
   let audio = new Audio("https://www.soundjay.com/buttons/button-16.mp3");
   audio.play();
+}
+
+function toggleSound(){
+  soundOn = !soundOn;
+}
+
+// Safe eval
+function safeEval(exp){
+  return Function('"use strict";return (' + exp + ')')();
 }
 
 // Operator check
@@ -93,11 +115,11 @@ function isOperator(char) {
   return "+-*/%".includes(char);
 }
 
-// Live preview
+// Preview
 function updatePreview() {
   try {
     if (display.value !== "") {
-      document.getElementById("preview").innerText = "= " + eval(display.value);
+      document.getElementById("preview").innerText = "= " + safeEval(display.value);
     } else {
       document.getElementById("preview").innerText = "";
     }
@@ -111,7 +133,7 @@ function append(value) {
   let lastChar = display.value.slice(-1);
 
   if (isOperator(value) && isOperator(lastChar)) return;
-  if (display.value.length > 15) return;
+  if (display.value.length > 20) return;
 
   display.value += value;
   updatePreview();
@@ -133,8 +155,13 @@ function deleteLast() {
 // Calculate
 function calculate() {
   try {
+    let start = performance.now();
+
     let expression = display.value;
-    let result = eval(expression);
+    let result = safeEval(expression);
+
+    let end = performance.now();
+    document.getElementById("time").innerText = "Time: " + (end-start).toFixed(2)+" ms";
 
     lastResult = result;
 
@@ -148,24 +175,43 @@ function calculate() {
   }
 }
 
+// Scientific
+function sqrt(){
+  try{
+    display.value = Math.sqrt(safeEval(display.value));
+    updatePreview();
+  }catch{}
+}
+
+function square(){
+  try{
+    display.value = Math.pow(safeEval(display.value),2);
+    updatePreview();
+  }catch{}
+}
+
+// Copy
+function copyResult(){
+  navigator.clipboard.writeText(display.value);
+}
+
 // Use Ans
 function useAns() {
   display.value += lastResult;
   updatePreview();
 }
 
-// Add history
+// History
 function addHistory(text, save = true) {
   let li = document.createElement("li");
   li.textContent = text;
 
   li.onclick = function () {
-    let value = text.split("=")[1].trim();
-    display.value = value;
+    display.value = text.split("=")[0].trim();
     updatePreview();
   };
 
-  li.classList.add("cursor-pointer", "hover:text-yellow-400");
+  li.classList.add("cursor-pointer","hover:text-yellow-400");
 
   historyList.prepend(li);
 
@@ -176,13 +222,12 @@ function addHistory(text, save = true) {
   }
 }
 
-// Clear history
 function clearHistory() {
   historyList.innerHTML = "";
   localStorage.removeItem("history");
 }
 
-// Theme toggle
+// Theme
 let dark = true;
 function toggleTheme() {
   let body = document.getElementById("body");
