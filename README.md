@@ -90,8 +90,3 @@ This project demonstrates strong **front-end development skills**, including:
 It is a **practical and user-friendly application** that showcases the ability to build interactive web projects using core technologies.
 
 ---
-
-## 🙌 Author
-
-**Lakshmi**
-Aspiring Full Stack Developer 💻
