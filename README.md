@@ -1,26 +1,42 @@
-# 🧮 Advanced Calculator App
+# 🧮 Advanced Calculator Pro
 
-A modern and responsive calculator built using **HTML, Tailwind CSS, and JavaScript**.
-This project performs basic arithmetic operations with additional advanced features like keyboard support, theme switching, and calculation history.
+A **modern, responsive, and feature-rich calculator** built using **HTML, Tailwind CSS, and JavaScript**.
+This project goes beyond basic calculations by providing a smooth user experience with **live preview, history tracking, keyboard support, and theme customization**.
 
 ---
 
 ## 🚀 Features
 
-* ➕ Perform basic calculations (Add, Subtract, Multiply, Divide)
-* ⌨️ Keyboard input support
+### 🔢 Core Functionality
+
+* ➕ Addition, ➖ Subtraction, ✖️ Multiplication, ➗ Division
+* % Percentage calculations
+* 🧠 "Ans" feature to reuse previous result
+
+### ⚡ Advanced Features
+
+* 👀 Live result preview while typing
+* 📜 Calculation history (stored using LocalStorage)
+* ⌨️ Full keyboard support (numbers, operators, Enter, Backspace, Esc)
+* 🔊 Sound feedback on button click (toggle ON/OFF)
+* ⏱️ Execution time display for calculations
+* 📋 Copy result to clipboard
+* 🧮 Basic scientific operations (√ Square root, x² Square)
+
+### 🎨 UI/UX Features
+
 * 🌙☀️ Dark / Light mode toggle
-* 📜 Calculation history tracking
-* 🔊 Button sound feedback
-* 📱 Fully responsive design
+* 📱 Fully responsive design (mobile + desktop)
+* ✨ Smooth button animations
+* 🧭 Clean and intuitive layout
 
 ---
 
 ## 🛠️ Technologies Used
 
-* HTML5
-* Tailwind CSS
-* JavaScript
+* **HTML5** – Structure
+* **Tailwind CSS** – Styling & responsiveness
+* **JavaScript (Vanilla JS)** – Logic & interactivity
 
 ---
 
@@ -28,31 +44,54 @@ This project performs basic arithmetic operations with additional advanced featu
 
 ```
 calculator-app/
-│── index.html
-│── README.md
+│── index.html      # Main application file
+│── README.md       # Project documentation
 ```
 
 ---
 
 ## ▶️ How to Run
 
-1. Download or clone this repository
-2. Open `index.html` in your browser
-3. Start using the calculator
+1. Download or clone the repository
+2. Open `index.html` in any modern browser
+3. Start calculating instantly 🚀
+
+---
+
+## 🎯 Key Highlights
+
+* Built without any frameworks (pure JavaScript)
+* Focus on **performance + user experience**
+* Uses **LocalStorage** for persistent history
+* Implements **safe evaluation logic (Function instead of eval)**
 
 ---
 
 ## 💡 Future Improvements
 
-* ❌ Replace `eval()` with safer logic
-* 💾 Store history using LocalStorage
-* 🎨 Improve UI design (animations, effects)
-* 📊 Add scientific calculator functions
+* 🧮 Add full scientific calculator (sin, cos, tan, log)
+* 📊 Graph plotting feature
+* 🧠 Expression parser (remove all eval usage completely)
+* 📱 Convert into Progressive Web App (PWA)
+* 🎙️ Voice input support
+* 🎨 Advanced animations & themes
 
 ---
 
-
 ## 📌 Conclusion
 
-This project demonstrates strong front-end development skills and practical JavaScript usage.
-It is a simple yet effective application that enhances user experience through interactive features.
+This project demonstrates strong **front-end development skills**, including:
+
+* DOM manipulation
+* Event handling
+* Responsive UI design
+* Real-world feature implementation
+
+It is a **practical and user-friendly application** that showcases the ability to build interactive web projects using core technologies.
+
+---
+
+## 🙌 Author
+
+**Lakshmi**
+Aspiring Full Stack Developer 💻
