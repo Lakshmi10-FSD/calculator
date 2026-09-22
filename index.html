@@ -1,75 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Advanced Calculator Pro</title>
+  <title>Advanced Calculator Pro+</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body id="body" class="bg-gray-900 flex items-center justify-center h-screen transition">
+<body id="body" class="bg-gradient-to-r from-gray-900 to-gray-800 flex items-center justify-center h-screen transition">
 
 <div class="flex gap-4 flex-wrap justify-center">
 
   <!-- Calculator -->
-  <div id="calcBox" class="bg-gray-800 p-6 rounded-xl shadow-lg w-80">
+  <div id="calcBox" class="backdrop-blur-lg bg-white/10 p-6 rounded-xl shadow-2xl w-80 border border-white/20">
     
     <!-- Top -->
     <div class="flex justify-between mb-3">
-      <h1 class="text-white font-bold">Calc Pro</h1>
+      <h1 class="text-white font-bold">Calc Pro+</h1>
       <div class="flex gap-2">
-        <button onclick="toggleSound()" class="text-white text-sm">🔊</button>
-        <button onclick="toggleTheme()" class="text-white">🌙</button>
+        <button onclick="toggleSound()" id="soundBtn">🔊</button>
+        <button onclick="toggleTheme()" id="themeBtn">🌙</button>
       </div>
     </div>
 
     <!-- Display -->
     <input id="display" type="text"
-      class="w-full mb-1 p-3 text-right text-xl rounded bg-gray-700 text-white"
+      class="w-full mb-1 p-3 text-right text-xl rounded bg-black/40 text-white outline-none"
       disabled />
 
-    <!-- Preview -->
-    <p id="preview" class="text-right text-gray-400 text-sm mb-1"></p>
-
-    <!-- Time -->
+    <p id="preview" class="text-right text-gray-300 text-sm mb-1"></p>
     <p id="time" class="text-right text-green-400 text-xs mb-2"></p>
 
     <!-- Buttons -->
     <div class="grid grid-cols-4 gap-3">
 
-      <button onclick="clearDisplay()" class="bg-red-500 text-white p-3 rounded">C</button>
-      <button onclick="deleteLast()" class="bg-yellow-500 text-white p-3 rounded">⌫</button>
-      <button onclick="append('%')" class="bg-gray-600 text-white p-3 rounded">%</button>
-      <button onclick="append('/')" class="bg-orange-500 text-white p-3 rounded">/</button>
+      <button onclick="clearDisplay()" class="btn bg-red-500">C</button>
+      <button onclick="deleteLast()" class="btn bg-yellow-500">⌫</button>
+      <button onclick="append('%')" class="btn">%</button>
+      <button onclick="append('/')" class="btn bg-orange-500">/</button>
 
-      <!-- Scientific -->
-      <button onclick="sqrt()" class="bg-purple-500 text-white p-3 rounded">√</button>
-      <button onclick="square()" class="bg-purple-500 text-white p-3 rounded">x²</button>
-      <button onclick="copyResult()" class="bg-blue-500 text-white p-3 rounded">📋</button>
-      <button onclick="append('*')" class="bg-orange-500 text-white p-3 rounded">*</button>
+      <button onclick="sqrt()" class="btn bg-purple-500">√</button>
+      <button onclick="square()" class="btn bg-purple-500">x²</button>
+      <button onclick="copyResult()" class="btn bg-blue-500">📋</button>
+      <button onclick="append('*')" class="btn bg-orange-500">*</button>
 
       <button onclick="append('7')" class="btn">7</button>
       <button onclick="append('8')" class="btn">8</button>
       <button onclick="append('9')" class="btn">9</button>
-      <button onclick="append('-')" class="bg-orange-500 text-white p-3 rounded">-</button>
+      <button onclick="append('-')" class="btn bg-orange-500">-</button>
 
       <button onclick="append('4')" class="btn">4</button>
       <button onclick="append('5')" class="btn">5</button>
       <button onclick="append('6')" class="btn">6</button>
-      <button onclick="append('+')" class="bg-orange-500 text-white p-3 rounded">+</button>
+      <button onclick="append('+')" class="btn bg-orange-500">+</button>
 
       <button onclick="append('1')" class="btn">1</button>
       <button onclick="append('2')" class="btn">2</button>
       <button onclick="append('3')" class="btn">3</button>
-      <button onclick="calculate()" class="bg-green-500 text-white p-3 rounded">=</button>
+      <button onclick="calculate()" class="btn bg-green-500">=</button>
 
       <button onclick="append('0')" class="btn col-span-2">0</button>
       <button onclick="append('.')" class="btn">.</button>
 
-      <button onclick="useAns()" class="bg-blue-500 text-white p-3 rounded col-span-4">Ans</button>
+      <button onclick="useAns()" class="btn bg-blue-500 col-span-4">Ans</button>
     </div>
   </div>
 
   <!-- History -->
-  <div class="bg-gray-800 p-4 rounded-xl w-56 text-white">
+  <div class="backdrop-blur-lg bg-white/10 p-4 rounded-xl w-56 text-white border border-white/20">
     <h2 class="font-bold mb-2">History</h2>
 
     <button onclick="clearHistory()" 
@@ -97,12 +93,12 @@ window.onload = function () {
 // Sound
 function playSound() {
   if (!soundOn) return;
-  let audio = new Audio("https://www.soundjay.com/buttons/button-16.mp3");
-  audio.play();
+  new Audio("https://www.soundjay.com/buttons/button-16.mp3").play();
 }
 
 function toggleSound(){
   soundOn = !soundOn;
+  document.getElementById("soundBtn").innerText = soundOn ? "🔊" : "🔇";
 }
 
 // Safe eval
@@ -156,17 +152,15 @@ function deleteLast() {
 function calculate() {
   try {
     let start = performance.now();
-
-    let expression = display.value;
-    let result = safeEval(expression);
-
+    let result = safeEval(display.value);
     let end = performance.now();
+
     document.getElementById("time").innerText = "Time: " + (end-start).toFixed(2)+" ms";
 
     lastResult = result;
 
-    let entry = expression + " = " + result;
-    addHistory(entry, true);
+    let time = new Date().toLocaleTimeString();
+    addHistory(display.value + " = " + result + " ("+time+")", true);
 
     display.value = result;
     updatePreview();
@@ -211,7 +205,7 @@ function addHistory(text, save = true) {
     updatePreview();
   };
 
-  li.classList.add("cursor-pointer","hover:text-yellow-400");
+  li.classList.add("cursor-pointer","hover:text-yellow-300");
 
   historyList.prepend(li);
 
@@ -231,20 +225,14 @@ function clearHistory() {
 let dark = true;
 function toggleTheme() {
   let body = document.getElementById("body");
-  let calc = document.getElementById("calcBox");
-
   dark = !dark;
 
   if (dark) {
-    body.classList.add("bg-gray-900");
-    body.classList.remove("bg-white");
-    calc.classList.add("bg-gray-800");
-    calc.classList.remove("bg-gray-200");
+    body.className = "bg-gradient-to-r from-gray-900 to-gray-800 flex items-center justify-center h-screen";
+    document.getElementById("themeBtn").innerText = "🌙";
   } else {
-    body.classList.add("bg-white");
-    body.classList.remove("bg-gray-900");
-    calc.classList.remove("bg-gray-800");
-    calc.classList.add("bg-gray-200");
+    body.className = "bg-gradient-to-r from-blue-200 to-white flex items-center justify-center h-screen";
+    document.getElementById("themeBtn").innerText = "☀️";
   }
 }
 
@@ -269,11 +257,16 @@ document.addEventListener("keydown", function(e) {
   color: white;
   padding: 12px;
   border-radius: 8px;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  background: #6b7280;
 }
 
 button:active {
   transform: scale(0.9);
-  transition: 0.1s;
 }
 </style>
 
