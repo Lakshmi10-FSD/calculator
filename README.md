@@ -1,4 +1,4 @@
-# 🧮 Advanced Calculator Pro+
+# 🧮 Advanced Calculator
 
 Advanced Calculator Pro+ is a modern, responsive, and feature-rich calculator built using **HTML, Tailwind CSS, and JavaScript**. This project goes beyond basic calculations by providing real-time preview, history tracking, keyboard support, theme switching, and additional scientific operations, making it a complete interactive calculator application.
 
