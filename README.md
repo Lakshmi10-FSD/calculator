@@ -1,50 +1,23 @@
-# 🧮 Advanced Calculator:
+# 🧮 Advanced Calculator Pro+
 
-A **modern, responsive, and feature-rich calculator** built using **HTML, Tailwind CSS, and Vanilla JavaScript**.
-This project goes beyond basic calculations by delivering a **smooth, interactive, and real-world user experience** with advanced features like live preview, persistent history, and theme customization.
+Advanced Calculator Pro+ is a modern, responsive, and feature-rich calculator built using **HTML, Tailwind CSS, and JavaScript**. This project goes beyond basic calculations by providing real-time preview, history tracking, keyboard support, theme switching, and additional scientific operations, making it a complete interactive calculator application.
 
 ---
 
 ## 🚀 Features
 
-### 🔢 Core Functionality
-
-* ➕ Addition
-* ➖ Subtraction
-* ✖️ Multiplication
-* ➗ Division
-* % Percentage calculations
-* 🧠 **Ans** feature to reuse previous result
-
----
-
-### ⚡ Advanced Features
-
-* 👀 **Live Preview** – Instantly see results while typing
-* 📜 **History Tracking** – Stores recent calculations using LocalStorage
-* ⌨️ **Full Keyboard Support**
-
-  * Numbers & operators
-  * Enter → Calculate
-  * Backspace → Delete
-  * Esc → Clear
-* 🔊 **Sound Feedback** with ON/OFF toggle
-* ⏱️ **Execution Time Measurement** for performance insight
-* 📋 **Copy to Clipboard** functionality
-* 🧮 **Scientific Operations**
-
-  * √ Square Root
-  * x² Square
-
----
-
-### 🎨 UI/UX Enhancements
-
-* 🌙☀️ **Dark / Light Mode Toggle** with dynamic UI
-* 📱 **Fully Responsive Design** (Mobile + Desktop)
-* ✨ Smooth button animations & hover effects
-* 🧊 Modern **glassmorphism UI design**
-* 🧭 Clean, minimal, and user-friendly layout
+* ➕ Basic operations (Addition, Subtraction, Multiplication, Division)
+* 📊 Percentage calculations
+* 🔬 Scientific functions (Square Root, Square)
+* 👀 Live preview of results while typing
+* 📜 Calculation history with LocalStorage
+* ⌨️ Keyboard support (Enter, Backspace, Escape)
+* 🌙☀️ Dark / Light theme toggle
+* 🔊 Sound toggle for button clicks
+* 📋 Copy result to clipboard
+* ⚡ Execution time display
+* 🔁 Reuse last answer (Ans feature)
+* 📱 Fully responsive modern UI
 
 ---
 
@@ -52,62 +25,62 @@ This project goes beyond basic calculations by delivering a **smooth, interactiv
 
 * **HTML5** – Structure
 * **Tailwind CSS** – Styling & responsive design
-* **JavaScript (Vanilla JS)** – Logic, DOM manipulation & interactivity
+* **JavaScript (Vanilla JS)** – Logic and interactivity
+* **LocalStorage** – Store calculation history
+
+---
+
+## ⚙️ How It Works
+
+1. User enters numbers using buttons or keyboard
+2. Expression is shown in display
+3. Live preview calculates result instantly
+4. Click **=** to get final result
+5. Result is saved in history with timestamp
+6. History is stored using LocalStorage
+7. Users can reuse previous calculations
 
 ---
 
 ## 📂 Project Structure
 
-```
-calculator-app/
-│── index.html      # Main application file
-│── README.md       # Project documentation
+```id="calcpro"
+Advanced-Calculator/
+│── index.html
+│── README.md
 ```
 
 ---
 
 ## ▶️ How to Run
 
-1. Download or clone this repository
-2. Open `index.html` in any modern browser
-3. Start calculating instantly 🚀
+1. Open the project in **VS Code / Notepad**
+2. Save the file as `index.html`
+3. Open in any web browser
+4. Start performing calculations
 
 ---
 
-## 🎯 Key Highlights
+## 🎯 Key Concepts Used
 
-* 💡 Built using **pure JavaScript (no frameworks)**
-* ⚡ Focused on **performance & real-time interaction**
-* 💾 Uses **LocalStorage** for persistent history
-* 🔐 Implements **safe evaluation logic** using `Function()` instead of `eval()`
-* 🎯 Designed with **real-world usability in mind**
+* DOM Manipulation
+* Event Handling
+* Keyboard Events
+* LocalStorage
+* JavaScript Functions & Conditions
+* Real-time UI updates
 
 ---
 
-## 💡 Future Improvements
+## 📌 Future Improvements
 
-* 🧮 Advanced scientific calculator (sin, cos, tan, log)
-* 📊 Graph plotting functionality
-* 🧠 Custom expression parser (remove eval completely)
-* 📱 Convert into **Progressive Web App (PWA)**
-* 🎙️ Voice input support
-* 📤 Export history as file
-* 🎨 Advanced animations and theme customization
+* Add more scientific functions (sin, cos, log)
+* Add calculation export option
+* Improve UI animations
+* Add mobile vibration feedback
 
 ---
 
 ## 📌 Conclusion
 
-This project demonstrates strong **front-end development skills**, including:
-
-* DOM manipulation
-* Event handling
-* Responsive UI design
-* Performance optimization
-* Real-world feature implementation
-
-It is a **practical, user-friendly application** that showcases the ability to build **interactive web applications using core technologies**.
-
----
-
-⭐ *A great project to include in your portfolio and showcase your front-end development skills.*
+This project demonstrates advanced front-end concepts such as **dynamic calculations, real-time updates, state handling, and persistent storage**. It is a strong portfolio project that highlights both UI design and JavaScript logic skills, making it suitable for interviews and GitHub showcasing.
